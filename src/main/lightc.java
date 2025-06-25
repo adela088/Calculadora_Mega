@@ -732,6 +732,10 @@ public class lightc extends javax.swing.JFrame {
         darkc dark = new darkc();
         dark.setVisible(false);
         this.setVisible(true);
+        mensaje = "";
+        mensaje2 = "";
+        Mostrador.setText(mensaje);
+        m.setText(mensaje2);
         sonido("op");
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
@@ -751,7 +755,7 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void MostradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostradorActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_MostradorActionPerformed
 
     private void cosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cosActionPerformed
@@ -955,7 +959,7 @@ public class lightc extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             Mostrador.setText("Error");
             mensaje = "";
-        }                       // Reproduce el sonido de operación
+        }
     }//GEN-LAST:event_factActionPerformed
 
     private void potActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potActionPerformed
@@ -1164,12 +1168,11 @@ public class lightc extends javax.swing.JFrame {
 
     private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
         if (!mensaje.isEmpty()) {
-            // Si termina en coma, permitir que se pueda volver a ingresar
+
             if (mensaje.endsWith(",")) {
                 coma.setEnabled(true);
             }
 
-            // Borrar último carácter
             mensaje = mensaje.substring(0, mensaje.length() - 1);
 
             // Si se borró todo el mensaje, reiniciar estado de cálculo
@@ -1182,11 +1185,9 @@ public class lightc extends javax.swing.JFrame {
             }
         }
 
-// Actualizar pantalla
         Mostrador.setText(mensaje);
         m.setText(mensaje2);
 
-// Ocultar indicadores de resultados previos
         mb1.setVisible(false);
         mb2.setVisible(false);
         time1.setVisible(false);
@@ -1249,8 +1250,6 @@ public class lightc extends javax.swing.JFrame {
             m.setText(mensaje2);
             sonido("op");
         }
-
-
     }//GEN-LAST:event_sumaActionPerformed
 
     private void tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tresActionPerformed
@@ -1295,8 +1294,6 @@ public class lightc extends javax.swing.JFrame {
                 mensaje = "";
             }
         }
-
-
     }//GEN-LAST:event_restaActionPerformed
 
     private void seisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seisActionPerformed
@@ -1324,7 +1321,6 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_cuatroActionPerformed
 
     private void multiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multiActionPerformed
-
         if (resultadoMostrado) {
             mensaje2 = mensaje;
             resultadoMostrado = false;
@@ -1357,8 +1353,6 @@ public class lightc extends javax.swing.JFrame {
             m.setText(mensaje2);
             sonido("op");
         }
-
-
     }//GEN-LAST:event_multiActionPerformed
 
     private void ochoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ochoActionPerformed
@@ -1421,8 +1415,6 @@ public class lightc extends javax.swing.JFrame {
             m.setText(mensaje2);
             sonido("op");
         }
-
-
     }//GEN-LAST:event_divisionActionPerformed
 
     private void modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modActionPerformed
