@@ -47,7 +47,7 @@ public class darkc extends javax.swing.JFrame {
 
     //metodo para establecer icon
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("img\\o.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/o.png")));
     }
 
     //metodo para llamar el sonido

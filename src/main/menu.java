@@ -17,6 +17,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+
 /**
  *
  * @author andre
@@ -35,11 +36,12 @@ public class menu extends javax.swing.JFrame {
         setIcon();
     }
     public static boolean Magic = false;
-    
 
     //método para establecer icon
     private void setIcon() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("img\\o.png")));
+        setIconImage(
+                Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/o.png"))
+        );
     }
 
     //método para llamar el sonido
@@ -149,7 +151,7 @@ public class menu extends javax.swing.JFrame {
         sonido("more");
         lightc bs = new lightc();
         this.dispose();
-        bs.setVisible(true); 
+        bs.setVisible(true);
     }//GEN-LAST:event_opaMouseClicked
 
     private void opaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_opaMouseEntered
