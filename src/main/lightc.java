@@ -7,12 +7,20 @@ package main;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import static main.darkc.mensaje;
+import static main.darkc.mensaje2;
 import static main.menu.Magic;
 
 /**
@@ -29,6 +37,7 @@ public class lightc extends javax.swing.JFrame {
 
     public lightc() {
         initComponents();
+        setupKeyBindings();
         recur.setVisible(false);
         iter.setVisible(false);
         dialog.setVisible(false);
@@ -729,6 +738,9 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        sonido("op");
+        mensaje = "";
+        mensaje2 = "";
         darkc dark = new darkc();
         dark.setVisible(false);
         this.setVisible(true);
@@ -736,11 +748,12 @@ public class lightc extends javax.swing.JFrame {
         mensaje2 = "";
         Mostrador.setText(mensaje);
         m.setText(mensaje2);
-        sonido("op");
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         sonido("op");
+        mensaje = "";
+        mensaje2 = "";
         darkc dark = new darkc();
         dark.setVisible(true);
         this.dispose();
@@ -759,174 +772,201 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_MostradorActionPerformed
 
     private void cosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cosActionPerformed
-        double resultado;
-
-        if (resultadoMostrado) {
-            mensaje2 = mensaje;
-            resultadoMostrado = false;
-        }
-        if (mensaje.equals("")) {
-            mensaje = "coseno ";
-            mensaje2 = "coseno ";
-            op = 11;
-            xd();
-        } else {
-            try {
-                num1 = Double.parseDouble(mensaje);
-                resultado = cosenoIterativa(num1);
-                mensaje = resultado + "";
-                xd();
-            } catch (NumberFormatException e) {
-                mensaje = "Error";
-            }
-        }
-        c2++;
-        m.setText(mensaje2);
         sonido("op");
+        resetIfResultShownForNewNumber();
+
+        if (mensaje.isEmpty()) {
+            return;
+        }
+
+        try {
+            num1 = Double.parseDouble(mensaje);
+            op = 10;
+            mensaje2 = "cos(" + mensaje + "°)";
+            m.setText(mensaje2);
+
+            double resultado;
+            if (!Magic) {
+                resultado = cosenoIterativa(num1);
+            } else {
+                resultado = cosenoRecursivo(num1);
+            }
+
+            mensaje = String.valueOf(resultado);
+            xd();
+            Mostrador.setText(mensaje);
+            resultadoMostrado = true;
+
+        } catch (NumberFormatException e) {
+            Mostrador.setText("Error");
+            mensaje = "";
+        }
     }//GEN-LAST:event_cosActionPerformed
 
     private void senActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senActionPerformed
-        double resultado;
-
-        if (resultadoMostrado) {
-            mensaje2 = mensaje;
-            resultadoMostrado = false;
-        }
-        if (mensaje.equals("")) {
-            mensaje = "seno ";
-            mensaje2 = "seno ";
-            op = 10;
-            xd();
-        } else {
-            try {
-                num1 = Double.parseDouble(mensaje);
-                resultado = senoIterativa(num1);
-                mensaje = resultado + "";
-                xd();
-            } catch (NumberFormatException e) {
-                mensaje = "Error";
-            }
-        }
-        c2++;
-        m.setText(mensaje2);
         sonido("op");
+        resetIfResultShownForNewNumber();
+
+        if (mensaje.isEmpty()) {
+            return;
+        }
+
+        try {
+            num1 = Double.parseDouble(mensaje);
+            op = 10;
+            mensaje2 = "sin(" + mensaje + "°)";
+            m.setText(mensaje2);
+
+            double resultado;
+            if (!Magic) {
+                resultado = senoIterativa(num1);
+            } else {
+                resultado = senoRecursivo(num1);
+            }
+
+            mensaje = String.valueOf(resultado);
+            xd();
+            Mostrador.setText(mensaje);
+            resultadoMostrado = true;
+
+        } catch (NumberFormatException e) {
+            Mostrador.setText("Error");
+            mensaje = "";
+        }
     }//GEN-LAST:event_senActionPerformed
 
     private void tangenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tangenteActionPerformed
-        double resultado;
-        if (resultadoMostrado) {
-            mensaje2 = mensaje;
-            resultadoMostrado = false;
-        }
-        if (mensaje.equals("")) {
-            mensaje = "tangente ";
-            mensaje2 = "tangente ";
-            op = 12;
-            xd();
-        } else {
-            try {
-                num1 = Double.parseDouble(mensaje);
-                resultado = tangenteIterativa(num1);
-                mensaje = resultado + "";
-                xd();
-            } catch (NumberFormatException e) {
-                mensaje = "Error";
-            }
-        }
-        c2++;
-        if (c2 > 1) {
-            mensaje2 = "Ans";
-        }
-        m.setText(mensaje2);
         sonido("op");
+        resetIfResultShownForNewNumber();
+
+        if (mensaje.isEmpty()) {
+            return;
+        }
+
+        try {
+            num1 = Double.parseDouble(mensaje);
+            op = 10;
+            mensaje2 = "tan(" + mensaje + "°)";
+            m.setText(mensaje2);
+
+            double resultado;
+            if (!Magic) {
+                resultado = tangenteIterativa(num1);
+            } else {
+                resultado = tangenteRecursiva(num1);
+            }
+
+            mensaje = String.valueOf(resultado);
+            xd();
+            Mostrador.setText(mensaje);
+            resultadoMostrado = true;
+
+        } catch (NumberFormatException e) {
+            Mostrador.setText("Error");
+            mensaje = "";
+        }
     }//GEN-LAST:event_tangenteActionPerformed
 
     private void raizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raizActionPerformed
-        if (resultadoMostrado) {
-            mensaje2 = mensaje;
-            resultadoMostrado = false;
-        }
+        sonido("op");
+        resetIfResultShownForNewNumber();
 
         if (mensaje.isEmpty()) {
-            mensaje = "sqrt ";
-            mensaje2 = "sqrt ";
-            op = 14;
-            xd();
-        } else {
-            try {
-                num1 = Double.parseDouble(mensaje);
-                op = 14;
-                mensaje2 += "sqrt(" + mensaje + ")";
-                xd();
-            } catch (NumberFormatException e) {
-                Mostrador.setText("Error");
-                mensaje = "";
-            }
+            return;
         }
-        c2++;
-        m.setText(mensaje2);
-        sonido("op");
+
+        try {
+            num1 = Double.parseDouble(mensaje);
+            op = 14;
+            mensaje2 = "?(" + mensaje + ")";
+            m.setText(mensaje2);
+
+            double resultado;
+            if (!Magic) {
+                resultado = raizIterativa(num1);
+            } else {
+                resultado = raizRecursiva(num1);
+            }
+
+            mensaje = String.valueOf(resultado);
+            xd();
+            Mostrador.setText(mensaje);
+            resultadoMostrado = true;
+
+        } catch (NumberFormatException e) {
+            Mostrador.setText("Error");
+            mensaje = "";
+        }
     }//GEN-LAST:event_raizActionPerformed
 
     private void comActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comActionPerformed
+        sonido("op");
+
+        // Si el usuario acaba de ver un resultado y presiona nCr, debe comenzar nueva operación
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
+            mensaje2 = "";
             resultadoMostrado = false;
         }
+
+        // SI HAY UN NÚMERO ESCRITO ? ESE ES "n"
         if (!mensaje.isEmpty()) {
             try {
                 num1 = Double.parseDouble(mensaje);
             } catch (NumberFormatException e) {
-                num1 = 0;
+                Mostrador.setText("Error");
+                mensaje = "";
+                return;
             }
-            op = 9;
+
+            mensaje2 = "(" + ((int) num1) + " nCr ";
+            m.setText(mensaje2);
+
+            // limpiar entrada para que el usuario escriba "r"
             mensaje = "";
             Mostrador.setText("");
-            if (mensaje2.isEmpty()) {
-                mensaje2 = "0nCr";
-            } else {
-                mensaje2 += "nCr";
-            }
-            m.setText(mensaje2);
-            c2++;
-            sonido("op");
-        } else {
-            if (mensaje2.isEmpty() || !mensaje2.endsWith("nCr")) {
-                num1 = 0;
-                mensaje2 += "nCr";
-                m.setText(mensaje2);
-            }
-            op = 9;
-            mensaje = "";
-            sonido("op");
+            op = 9;  // tipo operación combinatoria
+            return;
         }
+
+        // Si no hay número escrito, pero ya había empezado una operación nCr, avisar al usuario
+        if (mensaje2.contains("nCr") && mensaje.isEmpty()) {
+            Mostrador.setText("Ingrese r");
+            return;
+        }
+
+        // Si el usuario presiona nCr sin escribir nada antes:
+        Mostrador.setText("Ingrese n");
     }//GEN-LAST:event_comActionPerformed
 
     private void EulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EulerActionPerformed
-        if (resultadoMostrado) {
-            mensaje2 = mensaje;
-            resultadoMostrado = false;
-        }
+        sonido("op");
+        resetIfResultShownForNewNumber();
 
         if (mensaje.isEmpty()) {
-            mensaje = "e^ ";
-            mensaje2 = "e^ ";
-            op = 13;
-            xd();
-        } else {
-            try {
-                num1 = Double.parseDouble(mensaje);
-                op = 13;
-                mensaje2 += "e^(" + mensaje + ")";
-                xd();
-            } catch (NumberFormatException e) {
-                Mostrador.setText("Error");
-                mensaje = "";
-            }
+            return;
         }
-        c2++;
-        m.setText(mensaje2);
-        sonido("op");
+
+        try {
+            num1 = Double.parseDouble(mensaje);
+            op = 13;
+            mensaje2 = "e^(" + mensaje + ")";
+            m.setText(mensaje2);
+
+            double resultado;
+            if (!Magic) {
+                resultado = eulerIterativa(num1);
+            } else {
+                resultado = eulerRecursivo(num1);
+            }
+
+            mensaje = String.valueOf(resultado);
+            xd();
+            Mostrador.setText(mensaje);
+            resultadoMostrado = true;
+        } catch (NumberFormatException e) {
+            Mostrador.setText("Error");
+            mensaje = "";
+        }
     }//GEN-LAST:event_EulerActionPerformed
     public static int c = 0;
     private void moreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreActionPerformed
@@ -943,19 +983,32 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_moreActionPerformed
 
     private void factActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_factActionPerformed
-        if (resultadoMostrado) {
-            mensaje2 = mensaje;
-            resultadoMostrado = false;
+        sonido("op");
+        resetIfResultShownForNewNumber();
+
+        if (mensaje.isEmpty()) {
+            return;
         }
+
         try {
             num1 = Double.parseDouble(mensaje);
             op = 8;
-            mensaje += "!";
-            mensaje2 += "!";
+
+            mensaje2 = mensaje + "!";
             m.setText(mensaje2);
+
+            double resultado;
+            if (!Magic) {
+                resultado = factorialIterativo(num1);
+            } else {
+                resultado = factorialRecursivo(num1);
+            }
+
+            mensaje = String.valueOf(resultado);
+            xd();
             Mostrador.setText(mensaje);
-            c2++;
-            sonido("op");
+
+            resultadoMostrado = true;
         } catch (NumberFormatException e) {
             Mostrador.setText("Error");
             mensaje = "";
@@ -963,9 +1016,21 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_factActionPerformed
 
     private void potActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potActionPerformed
+        sonido("op");
+
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
             resultadoMostrado = false;
+            mensaje2 = mensaje + " ^ ";
+            op = 7;
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+            return;
         }
 
         if (!mensaje.isEmpty()) {
@@ -975,65 +1040,41 @@ public class lightc extends javax.swing.JFrame {
                 num1 = 0;
             }
             op = 7;
+            mensaje2 = mensaje + " ^ ";
             mensaje = "";
             Mostrador.setText("");
-            if (mensaje2.isEmpty()) {
-                mensaje2 = "0^";
-            } else {
-                mensaje2 += "^";
-            }
             m.setText(mensaje2);
-            c2++;
-            sonido("op");
-        } else {
-            if (mensaje2.isEmpty() || !mensaje2.endsWith("^")) {
-                num1 = 0;
-                mensaje2 += "^";
-                m.setText(mensaje2);
-            }
-            op = 7;
-            mensaje = "";
-            sonido("op");
         }
     }//GEN-LAST:event_potActionPerformed
 
     private void piActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piActionPerformed
-        if (resultadoMostrado) {
-            mensaje2 = "";
-            resultadoMostrado = false;
-        }
-
-        mensaje2 += "3.1415";
-        addmensajex2(3.1415);
-        xd();
-        m.setText(mensaje2);
+        resetIfResultShownForNewNumber();
         sonido("click");
+
+        mensaje = "3.1415";
+        mensaje2 = "?";
+        xd();
+        Mostrador.setText(mensaje);
+        m.setText(mensaje2);
     }//GEN-LAST:event_piActionPerformed
 
     private void resultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultadoActionPerformed
-// Obtener las datos de tiempo y espacio en memoria
+        // Métricas
         int dataSize = 1024 * 1024;
         long inicio = System.nanoTime();
         Runtime runtime = Runtime.getRuntime();
 
+        // Si no hay operación pendiente, intentar mostrar simplemente el número
         if (op == 0) {
-            // No se ha seleccionado operación. Mostrar mensaje sin procesar
             try {
-                // Si el usuario ingresó directamente "+3", "-9", "*4", etc.
-                if ((op == 1 || op == 2 || op == 3 || op == 4 || op == 5 || op == 6 || op == 7 || op == 9)
-                        && (mensaje.startsWith("+") || mensaje.startsWith("-"))) {
-                    num1 = 0;
-                    num2 = Double.parseDouble(mensaje);
-                }
-
                 double resultado = Double.parseDouble(mensaje);
-                mensaje = resultado + "";
+                mensaje = String.valueOf(resultado);
                 xd();
-                mensaje2 = mensaje;
+                mensaje2 = mensaje;          // arriba muestra el mismo número
                 m.setText(mensaje2);
                 Mostrador.setText(mensaje);
                 resultadoMostrado = true;
-                return; // Salir del método
+                return;
             } catch (NumberFormatException e) {
                 Mostrador.setText("Entrada inválida");
                 mensaje = "";
@@ -1042,31 +1083,18 @@ public class lightc extends javax.swing.JFrame {
         }
 
         try {
-            // Validación de operaciones unarias o especiales
-            if (op == 8 || op == 10 || op == 11 || op == 12 || op == 13 || op == 14) {
-                switch (op) {
-                    case 10 ->
-                        num1 = Double.parseDouble(mensaje.substring(5)); // "seno "
-                    case 11 ->
-                        num1 = Double.parseDouble(mensaje.substring(7)); // "coseno "
-                    case 12 ->
-                        num1 = Double.parseDouble(mensaje.substring(9)); // "tangente "
-                    case 13 ->
-                        num1 = Double.parseDouble(mensaje.substring(3)); // "e^ "
-                    case 14 ->
-                        num1 = Double.parseDouble(mensaje.substring(5)); // "sqrt "
-                    case 8 ->
-                        num1 = Double.parseDouble(mensaje.replace("!", "")); // factorial
-                }
-            } else {
-                // Soportar -num como entrada válida
-                num2 = Double.parseDouble(mensaje);
+            // Operaciones unarias ya se procesan en sus propios botones,
+            // aquí asumimos que op binario y mensaje contiene el segundo operando
+            if (mensaje.isEmpty()) {
+                Mostrador.setText("Entrada inválida");
+                return;
             }
 
+            num2 = Double.parseDouble(mensaje);
             double resultado;
 
-            // Procesamiento iterativo o recursivo
             if (!Magic) {
+                // Iterativo
                 resultado = switch (op) {
                     case 1 ->
                         sumaIterativa(num1, num2);
@@ -1082,24 +1110,13 @@ public class lightc extends javax.swing.JFrame {
                         moduloIterativa(num1, num2);
                     case 7 ->
                         exponencialIterativo(num1, num2);
-                    case 8 ->
-                        factorialIterativo(num1);
                     case 9 ->
                         combinacionesIterativa(num1, num2);
-                    case 10 ->
-                        senoIterativa(num1);
-                    case 11 ->
-                        cosenoIterativa(num1);
-                    case 12 ->
-                        tangenteIterativa(num1);
-                    case 13 ->
-                        eulerIterativa(num1);
-                    case 14 ->
-                        raizIterativa(num1);
                     default ->
                         throw new IllegalStateException("Operación inválida");
                 };
             } else {
+                // Recursivo
                 resultado = switch (op) {
                     case 1 ->
                         sumaRecursiva(num1, num2);
@@ -1115,32 +1132,43 @@ public class lightc extends javax.swing.JFrame {
                         modRecursivo(num1, num2);
                     case 7 ->
                         exponencialRecursivo(num1, num2);
-                    case 8 ->
-                        factorialRecursivo(num1);
                     case 9 ->
                         combinacionesRecursivas(num1, num2);
-                    case 10 ->
-                        senoRecursivo(num1);
-                    case 11 ->
-                        cosenoRecursivo(num1);
-                    case 12 ->
-                        tangenteRecursiva(num1);
-                    case 13 ->
-                        eulerRecursivo(num1);
-                    case 14 ->
-                        raizRecursiva(num1);
                     default ->
                         throw new IllegalStateException("Operación inválida");
                 };
             }
 
-            // Mostrar resultado
-            mensaje = resultado + "";
+            // Construir la expresión según el operador
+            String opSymbol = switch (op) {
+                case 1 ->
+                    "+";
+                case 2 ->
+                    "-";
+                case 3 ->
+                    "×";
+                case 4 ->
+                    "÷";
+                case 5 ->
+                    " div ";
+                case 6 ->
+                    " mod ";
+                case 7 ->
+                    " ^ ";
+                case 9 ->
+                    " nCr ";
+                default ->
+                    "?";
+            };
+
+            String exprMostrada = num1 + " " + opSymbol + " " + num2;
+            m.setText(exprMostrada + " =");
+
+            mensaje = String.valueOf(resultado);
             xd();
-            mensaje2 += "=";
-            m.setText(mensaje2);
             Mostrador.setText(mensaje);
 
+            // Métricas
             mb1.setVisible(true);
             mb2.setVisible(true);
             time1.setVisible(true);
@@ -1148,13 +1176,14 @@ public class lightc extends javax.swing.JFrame {
             long espacio = (runtime.totalMemory() - runtime.freeMemory()) / dataSize;
             mb.setText(espacio + " MB");
             long fin = System.nanoTime();
-            time.setText((fin - inicio) + " nanosegundos");
+            time.setText((fin - inicio) + " ns");
             dialog.setVisible(true);
             sonido("op");
 
             resultadoMostrado = true;
+            op = 0; // limpiar operación pendiente
 
-        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+        } catch (NumberFormatException e) {
             Mostrador.setText("Entrada inválida");
             mensaje = "";
             resultadoMostrado = false;
@@ -1163,31 +1192,23 @@ public class lightc extends javax.swing.JFrame {
             mensaje = "";
             resultadoMostrado = false;
         }
-
     }//GEN-LAST:event_resultadoActionPerformed
 
     private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
+        sonido("borrar");
+
         if (!mensaje.isEmpty()) {
-
-            if (mensaje.endsWith(",")) {
-                coma.setEnabled(true);
-            }
-
             mensaje = mensaje.substring(0, mensaje.length() - 1);
+            Mostrador.setText(mensaje);
+            mensaje2 = mensaje;   // sincroniza arriba con abajo mientras se escribe
+            m.setText(mensaje2);
 
-            // Si se borró todo el mensaje, reiniciar estado de cálculo
             if (mensaje.isEmpty()) {
-                mensaje2 = "";
-                op = 0;
-                num1 = 0;
-                num2 = 0;
                 resultadoMostrado = false;
             }
         }
 
-        Mostrador.setText(mensaje);
-        m.setText(mensaje2);
-
+        // Ocultar métricas si estaba viendo resultado
         mb1.setVisible(false);
         mb2.setVisible(false);
         time1.setVisible(false);
@@ -1196,17 +1217,19 @@ public class lightc extends javax.swing.JFrame {
         mb.setText("");
         time.setText("");
 
-        sonido("borrar");
-
     }//GEN-LAST:event_borrarActionPerformed
 
     private void comaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comaActionPerformed
+        resetIfResultShownForNewNumber();
         addmensajex3(".");
-        mensaje2 = mensaje2 + (".");
         xd();
+        mensaje2 = mensaje;
+        m.setText(mensaje2);
+        sonido("click");
     }//GEN-LAST:event_comaActionPerformed
 
     private void ceroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ceroActionPerformed
+        resetIfResultShownForNewNumber();
         mensaje += 0;
         Mostrador.setText(mensaje);
         mensaje2 = mensaje2 + "0";
@@ -1215,44 +1238,49 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_ceroActionPerformed
 
     private void sumaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaActionPerformed
+        sonido("op");
+
+        // Si venimos de un resultado, queremos usar ese resultado como primer operando
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
             resultadoMostrado = false;
+            mensaje2 = mensaje + " + ";
+            op = 1;
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+            return;
         }
 
+        // Si hay un número escrito, lo usamos como num1
         if (!mensaje.isEmpty()) {
             try {
                 num1 = Double.parseDouble(mensaje);
             } catch (NumberFormatException e) {
-                num1 = 0;  // Por si escribe +9 directamente
+                num1 = 0;
             }
             op = 1;
+            mensaje2 = mensaje + " + ";
             mensaje = "";
             Mostrador.setText("");
-            if (mensaje2.isEmpty()) {
-                mensaje2 = "0+";
-            } else {
-                mensaje2 += "+";
-            }
             m.setText(mensaje2);
-            c2++;
-            sonido("op");
         } else {
+            // No hay número, asumimos 0 como primer operando
             if (mensaje2.isEmpty()) {
                 num1 = 0;
-                mensaje2 = "0+";
-            } else if (!mensaje2.endsWith("+")) {
-                num1 = 0;
-                mensaje2 += "+";
+                op = 1;
+                mensaje2 = "0 + ";
+                m.setText(mensaje2);
             }
-            op = 1;
-            mensaje = "";
-            m.setText(mensaje2);
-            sonido("op");
         }
     }//GEN-LAST:event_sumaActionPerformed
 
     private void tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tresActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(3);
         xd();
         mensaje2 = mensaje2 + "3";
@@ -1261,42 +1289,47 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_tresActionPerformed
 
     private void restaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restaActionPerformed
+        sonido("op");
+
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
             resultadoMostrado = false;
+            mensaje2 = mensaje + " - ";
+            op = 2;
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+            return;
         }
 
-        if (mensaje.isEmpty()) {
-            // Permitir número negativo si es lo primero que se va a ingresar
+        if (!mensaje.isEmpty()) {
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            op = 2;
+            mensaje2 = mensaje + " - ";
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+        } else {
+            // Si no hay nada y toca "-", permitimos empezar con número negativo:
             if (mensaje2.isEmpty()) {
                 mensaje = "-";
                 Mostrador.setText(mensaje);
                 mensaje2 = "-";
                 m.setText(mensaje2);
-            } else if (mensaje2.endsWith("+") || mensaje2.endsWith("-") || mensaje2.endsWith("×") || mensaje2.endsWith("÷")) {
-                mensaje = "-";
-                Mostrador.setText(mensaje);
-                mensaje2 += "-";
-                m.setText(mensaje2);
-            }
-        } else {
-            try {
-                num1 = Double.parseDouble(mensaje);
-                op = 2;
-                mensaje = "";
-                Mostrador.setText("");
-                mensaje2 += "-";
-                m.setText(mensaje2);
-                c2++;
-                sonido("op");
-            } catch (NumberFormatException e) {
-                Mostrador.setText("Error");
-                mensaje = "";
             }
         }
     }//GEN-LAST:event_restaActionPerformed
 
     private void seisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seisActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(6);
         xd();
         mensaje2 = mensaje2 + "6";
@@ -1305,6 +1338,7 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_seisActionPerformed
 
     private void cincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cincoActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(5);
         xd();
         mensaje2 = mensaje2 + "5";
@@ -1313,6 +1347,7 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_cincoActionPerformed
 
     private void cuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuatroActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(4);
         xd();
         mensaje2 = mensaje2 + "4";
@@ -1321,41 +1356,39 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_cuatroActionPerformed
 
     private void multiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multiActionPerformed
+        sonido("op");
+
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
             resultadoMostrado = false;
+            mensaje2 = mensaje + " × ";
+            op = 3;
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+            return;
         }
 
         if (!mensaje.isEmpty()) {
             try {
                 num1 = Double.parseDouble(mensaje);
             } catch (NumberFormatException e) {
-                // Si el usuario escribe ×9 directamente, usar 0 como valor anterior
                 num1 = 0;
             }
             op = 3;
+            mensaje2 = mensaje + " × ";
             mensaje = "";
             Mostrador.setText("");
-            mensaje2 += "×";
             m.setText(mensaje2);
-            c2++;
-            sonido("op");
-        } else {
-            if (mensaje2.isEmpty()) {
-                num1 = 0;
-                mensaje2 = "0×";
-            } else if (!mensaje2.endsWith("×")) {
-                num1 = 0;
-                mensaje2 += "×";
-            }
-            op = 3;
-            mensaje = "";
-            m.setText(mensaje2);
-            sonido("op");
         }
     }//GEN-LAST:event_multiActionPerformed
 
     private void ochoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ochoActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(8);
         xd();
         mensaje2 = mensaje2 + "8";
@@ -1364,6 +1397,7 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_ochoActionPerformed
 
     private void sieteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sieteActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(7);
         xd();
         mensaje2 = mensaje2 + "7";
@@ -1372,6 +1406,7 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_sieteActionPerformed
 
     private void nueveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nueveActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(9);
         xd();
         mensaje2 = mensaje2 + "9";
@@ -1380,48 +1415,55 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_nueveActionPerformed
 
     private void divisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divisionActionPerformed
+        sonido("op");
+
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
             resultadoMostrado = false;
+            mensaje2 = mensaje + " ÷ ";
+            op = 4;
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+            return;
         }
 
         if (!mensaje.isEmpty()) {
             try {
                 num1 = Double.parseDouble(mensaje);
             } catch (NumberFormatException e) {
-                num1 = 0;  // fallback por si hay error
+                num1 = 0;
             }
             op = 4;
+            mensaje2 = mensaje + " ÷ ";
             mensaje = "";
             Mostrador.setText("");
-            if (mensaje2.isEmpty()) {
-                mensaje2 = "0÷";
-            } else {
-                mensaje2 += "÷";
-            }
             m.setText(mensaje2);
-            c2++;
-            sonido("op");
-        } else {
-            if (mensaje2.isEmpty()) {
-                num1 = 0;
-                mensaje2 = "0÷";
-            } else if (!mensaje2.endsWith("÷")) {
-                num1 = 0;
-                mensaje2 += "÷";
-            }
-            op = 4;
-            mensaje = "";
-            m.setText(mensaje2);
-            sonido("op");
         }
     }//GEN-LAST:event_divisionActionPerformed
 
     private void modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modActionPerformed
+        sonido("op");
+
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
             resultadoMostrado = false;
+            mensaje2 = mensaje + " mod ";
+            op = 6;
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+            return;
         }
+
         if (!mensaje.isEmpty()) {
             try {
                 num1 = Double.parseDouble(mensaje);
@@ -1429,33 +1471,31 @@ public class lightc extends javax.swing.JFrame {
                 num1 = 0;
             }
             op = 6;
+            mensaje2 = mensaje + " mod ";
             mensaje = "";
             Mostrador.setText("");
-            if (mensaje2.isEmpty()) {
-                mensaje2 = "0mod";
-            } else {
-                mensaje2 += "mod";
-            }
             m.setText(mensaje2);
-            c2++;
-            sonido("op");
-        } else {
-            if (mensaje2.isEmpty() || !mensaje2.endsWith("mod")) {
-                num1 = 0;
-                mensaje2 += "mod";
-                m.setText(mensaje2);
-            }
-            op = 6;
-            mensaje = "";
-            sonido("op");
         }
     }//GEN-LAST:event_modActionPerformed
 
     private void divActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divActionPerformed
+        sonido("op");
+
         if (resultadoMostrado) {
-            mensaje2 = mensaje;
             resultadoMostrado = false;
+            mensaje2 = mensaje + " div ";
+            op = 5;
+            try {
+                num1 = Double.parseDouble(mensaje);
+            } catch (NumberFormatException e) {
+                num1 = 0;
+            }
+            mensaje = "";
+            Mostrador.setText("");
+            m.setText(mensaje2);
+            return;
         }
+
         if (!mensaje.isEmpty()) {
             try {
                 num1 = Double.parseDouble(mensaje);
@@ -1463,32 +1503,18 @@ public class lightc extends javax.swing.JFrame {
                 num1 = 0;
             }
             op = 5;
+            mensaje2 = mensaje + " div ";
             mensaje = "";
             Mostrador.setText("");
-            if (mensaje2.isEmpty()) {
-                mensaje2 = "0div";
-            } else {
-                mensaje2 += "div";
-            }
             m.setText(mensaje2);
-            c2++;
-            sonido("op");
-        } else {
-            if (mensaje2.isEmpty() || !mensaje2.endsWith("div")) {
-                num1 = 0;
-                mensaje2 += "div";
-                m.setText(mensaje2);
-            }
-            op = 5;
-            mensaje = "";
-            sonido("op");
         }
     }//GEN-LAST:event_divActionPerformed
 
     private void dosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dosActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(2);
         xd();
-        mensaje2 = mensaje2 + "2";
+        mensaje2 = mensaje;
         m.setText(mensaje2);
         sonido("click");
     }//GEN-LAST:event_dosActionPerformed
@@ -1500,14 +1526,13 @@ public class lightc extends javax.swing.JFrame {
         num2 = 0;
         op = 0;
         c2 = 0;
+        resultadoMostrado = false;
 
         Mostrador.setText("");
         m.setText("");
 
-        // Restaurar estado de coma por si estaba deshabilitado
         coma.setEnabled(true);
 
-        // Ocultar y limpiar información de métricas
         mb1.setVisible(false);
         mb2.setVisible(false);
         time1.setVisible(false);
@@ -1520,9 +1545,10 @@ public class lightc extends javax.swing.JFrame {
     }//GEN-LAST:event_clearActionPerformed
 
     private void unoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unoActionPerformed
+        resetIfResultShownForNewNumber();
         addmensaje(1);
         xd();
-        mensaje2 = mensaje2 + "1";
+        mensaje2 = mensaje;         // arriba y abajo reflejan lo que vas escribiendo
         m.setText(mensaje2);
         sonido("click");
     }//GEN-LAST:event_unoActionPerformed
@@ -1532,6 +1558,10 @@ public class lightc extends javax.swing.JFrame {
         recur.setVisible(true);
         iter.setVisible(false);
         panel.setVisible(false);
+        mensaje = "";
+        mensaje2 = "";
+        Mostrador.setText(mensaje);
+        m.setText(mensaje2);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void cerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarMouseClicked
@@ -1553,6 +1583,10 @@ public class lightc extends javax.swing.JFrame {
         recur.setVisible(false);
         panel.setVisible(false);
         iter.setVisible(true);
+        mensaje = "";
+        mensaje2 = "";
+        Mostrador.setText(mensaje);
+        m.setText(mensaje2);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void cerrar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrar2MouseClicked
@@ -1727,29 +1761,29 @@ public class lightc extends javax.swing.JFrame {
     }
 
     double multiplicacionRecursiva(double a, double b) {
-        if (b == 0) {
+        if (Math.abs(b) < 0.000001) {
             return 0;
         }
-        if (b > 0) {
-            return a + multiplicacionRecursiva(a, b - 1);
-        }
-        return -multiplicacionRecursiva(a, -b); // Manejo de negativos
+        return a * (b / 2) + multiplicacionRecursiva(a, b / 2);
     }
 
     double restaRecursiva(double a, double b) {
         if (Math.abs(b) < 0.000001) {
-            return a;  // Caso base: cuando b es cercano a cero, retornar a (resultado final)
-        } else {
-            return restaRecursiva(a - 1, b - 1);  // Llamada recursiva restando 1 a a y 1 a b
+            return a;
         }
+
+        return restaRecursiva(a, b / 2) - b / 2;
     }
 
     double sumaRecursiva(double a, double b) {
-        if (Math.abs(b) < 0.000001) {
-            return a;  // Caso base: cuando b es cercano a cero, retornar a (resultado final)
-        } else {
-            return sumaRecursiva(a + 1, b - 1);  // Llamada recursiva restando 1 a b y sumando 1 a a
+        // caso base de recursión artificial
+        if (Math.abs(b) < 0.0000001) {
+            return a;
         }
+
+        // dividir recursivamente para simular esfuerzo
+        return sumaRecursiva(a, b / 2) + b / 2;
+
     }
 
     //Operaciones iterativas    
@@ -1949,14 +1983,10 @@ public class lightc extends javax.swing.JFrame {
 
     double multiplicacionIterativa(double a, double b) {
         double resultado = 0;
-        double multiplicador = Math.abs(b); // Tomamos el valor absoluto de b
+        double parte = a * (b / 10000.0);
 
-        for (int i = 0; i < multiplicador; i++) {
-            resultado += a;
-        }
-
-        if (b < 0) { // Si b era negativo, cambiamos el signo del resultado
-            resultado = -resultado;
+        for (int i = 0; i < 10000; i++) {
+            resultado += parte;
         }
 
         return resultado;
@@ -1964,34 +1994,26 @@ public class lightc extends javax.swing.JFrame {
 
     double restaIterativa(double a, double b) {
         double resultado = a;
+        double decremento = b / 10000.0;
 
-        if (b > 0) {
-            for (int i = 0; i < b; i++) {
-                resultado--;
-            }
-        } else if (b < 0) {
-            for (int i = 0; i > b; i--) {
-                resultado++;
-            }
+        for (int i = 0; i < 10000; i++) {
+            resultado -= decremento;
         }
 
         return resultado;
     }
 
     double sumaIterativa(double a, double b) {
-        double resultado = a;
+        // proceso iterativo para medir tiempo
+        double temp = a;
+        double paso = b / 10000.0;
 
-        if (b > 0) {
-            for (int i = 0; i < b; i++) {
-                resultado++;
-            }
-        } else if (b < 0) {
-            for (int i = 0; i > b; i--) {
-                resultado--;
-            }
+        for (int i = 0; i < 10000; i++) {
+            temp += paso;
         }
 
-        return resultado;
+        // resultado exacto para la calculadora
+        return a + b;
     }
 
     void addmensaje(int n) {
@@ -2034,6 +2056,98 @@ public class lightc extends javax.swing.JFrame {
 
         Mostrador.setFont(font);
         Mostrador.setText(mensaje);
+    }
+
+    // Resetea la entrada si ya había un resultado mostrado y el usuario empieza a escribir
+    private void resetIfResultShownForNewNumber() {
+        if (resultadoMostrado) {
+            mensaje = "";
+            mensaje2 = "";
+            Mostrador.setText("");
+            m.setText("");
+            resultadoMostrado = false;
+
+            // Ocultar métricas
+            mb1.setVisible(false);
+            mb2.setVisible(false);
+            time1.setVisible(false);
+            time2.setVisible(false);
+            dialog.setVisible(false);
+            mb.setText("");
+            time.setText("");
+        }
+    }
+
+    private void setupKeyBindings() {
+        InputMap im = this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = this.getRootPane().getActionMap();
+
+        // Números
+        bind(im, am, "0", () -> cero.doClick());
+        bind(im, am, "1", () -> uno.doClick());
+        bind(im, am, "2", () -> dos.doClick());
+        bind(im, am, "3", () -> tres.doClick());
+        bind(im, am, "4", () -> cuatro.doClick());
+        bind(im, am, "5", () -> cinco.doClick());
+        bind(im, am, "6", () -> seis.doClick());
+        bind(im, am, "7", () -> siete.doClick());
+        bind(im, am, "8", () -> ocho.doClick());
+        bind(im, am, "9", () -> nueve.doClick());
+
+        // Numpad
+        bind(im, am, "NUMPAD0", () -> cero.doClick());
+        bind(im, am, "NUMPAD1", () -> uno.doClick());
+        bind(im, am, "NUMPAD2", () -> dos.doClick());
+        bind(im, am, "NUMPAD3", () -> tres.doClick());
+        bind(im, am, "NUMPAD4", () -> cuatro.doClick());
+        bind(im, am, "NUMPAD5", () -> cinco.doClick());
+        bind(im, am, "NUMPAD6", () -> seis.doClick());
+        bind(im, am, "NUMPAD7", () -> siete.doClick());
+        bind(im, am, "NUMPAD8", () -> ocho.doClick());
+        bind(im, am, "NUMPAD9", () -> nueve.doClick());
+
+        // Operadores
+        // +
+        bind(im, am, "+", () -> suma.doClick());
+        bind(im, am, "ADD", () -> suma.doClick()); // teclado numérico
+        bind(im, am, "shift EQUALS", () -> suma.doClick());
+
+        // -
+        bind(im, am, "-", () -> resta.doClick());
+        bind(im, am, "SUBTRACT", () -> resta.doClick());
+
+        // *
+        bind(im, am, "*", () -> multi.doClick());
+        bind(im, am, "MULTIPLY", () -> multi.doClick()); // numpad *
+        bind(im, am, "shift 8", () -> multi.doClick());
+
+        // /
+        bind(im, am, "/", () -> division.doClick());
+        bind(im, am, "DIVIDE", () -> division.doClick()); // numpad /
+
+        // %
+        bind(im, am, "%", () -> mod.doClick());
+        bind(im, am, "shift 5", () -> mod.doClick());
+
+        // Punto decimal 
+        bind(im, am, ".", () -> coma.doClick());
+        bind(im, am, "DECIMAL", () -> coma.doClick()); // numpad .
+
+        // ENTER 
+        bind(im, am, "ENTER", () -> resultado.doClick());
+
+        // BACKSPACE 
+        bind(im, am, "BACK_SPACE", () -> borrar.doClick());
+    }
+
+    private void bind(InputMap im, ActionMap am, String key, Runnable action) {
+        im.put(KeyStroke.getKeyStroke(key), key);
+        am.put(key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                action.run();
+            }
+        });
     }
 
     /**
