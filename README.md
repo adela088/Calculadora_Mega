@@ -14,37 +14,83 @@ Además de realizar los cálculos, la aplicación muestra:
 
 ## ✨ Características principales
 
-- Operaciones básicas y científicas:
-  - Suma, resta, multiplicación, división
-  - Potencia, raíz, módulo, división entera
-  - Factorial, combinatoria
-  - Funciones trigonométricas: seno, coseno, tangente
-- Comparación en tiempo y espacio de cada operación en sus versiones iterativa y recursiva
-- Interfaz gráfica intuitiva usando JFrames
-- Tema Claro y Oscuro para la preferencia del usuario
+- 🧩 **Operaciones básicas y científicas**
+  - Suma, resta, multiplicación, división  
+  - Potencia, raíz cuadrada  
+  - Módulo y división entera  
+  - Factorial  
+  - Combinatoria **nCr**  
+  - Funciones trigonométricas: **seno**, **coseno**, **tangente**
+
+- ⚖️ **Comparación entre implementaciones iterativas y recursivas**
+- 🎨 **Interfaz gráfica intuitiva (Swing/JFrame)**
+- 🌗 **Modo Claro y Oscuro**
+- 🎧 **Sonidos integrados para cada acción**
 
 ---
 
 ## 🚀 Tecnologías utilizadas
 
-- **Lenguaje**: Java  
-- **Entorno**: NetBeans  
-- **Librerías**:
-  - `javax.swing` (GUI)
-  - `System.nanoTime()` (medición de tiempo)
-  - `Runtime.getRuntime()` (uso de memoria)
+- **Lenguaje:** Java  
+- **Entorno de desarrollo:** Apache NetBeans  
+- **Librerías empleadas:**
+  - `javax.swing`
+  - `System.nanoTime()`
+  - `Runtime.getRuntime()`
 
 ---
 
-## 📌 Objetivo
+## 📌 Objetivo del proyecto
 
-El propósito de esta calculadora es **explorar y comparar los paradigmas de programación iterativa y recursiva**, observando su desempeño a nivel de ejecución y uso de recursos, con fines educativos y de práctica.
+El propósito de este proyecto es **explorar y comparar** dos paradigmas fundamentales de la programación:
+
+- 🔁 **Recursividad**  
+- 🔂 **Iteración**
+
+Permitiendo al usuario observar diferencias en **velocidad**, **memoria**, y **complejidad** de implementación.
 
 ---
+
+## 🛠️ Cómo ejecutar el proyecto en NetBeans
+
+### ✅ Requisitos previos
+
+- **JDK 17 o superior** → https://adoptium.net/  
+- **Apache NetBeans 15 o superior** → https://netbeans.apache.org/
+
+---
+
+### 📁 Importar el proyecto
+
+1. Abre NetBeans  
+2. File → Open Project  
+3. Selecciona la carpeta:
+4. Open Project
+
+---
+
+### ▶️ Ejecutar la aplicación
+
+1. Selecciona **Calculadora_Mega** en el panel Projects  
+2. Clic derecho → **Run**  
+3. O presiona **F6**
+
+---
+
+### 🧪 Cómo probar las funciones
+
+- Operaciones básicas: +, -, ×, ÷, mod, div  
+- Funciones avanzadas: potencia, raíz, factorial, nCr  
+- Trigonometría: sin, cos, tan  
+- Modo Iterativo / Recursivo  
+- Soporte para teclado y NumPad
+
+---
+
 ## 📷 Capturas de pantalla
 
 ### 📩 Menú
-![Modo Recursivo](capture1.png)
+![Menú](capture1.png)
 
 ### ⛅ Modo Claro
 ![Modo Claro](capture2.png)
@@ -54,6 +100,7 @@ El propósito de esta calculadora es **explorar y comparar los paradigmas de pro
 
 ---
 
-🧑‍💻 Autora: Andrea De la Ossa
+## 👤 Autora
 
+🧑‍💻 **Andrea De la Ossa**  
 💼 Estudiante de Ingeniería de Sistemas
