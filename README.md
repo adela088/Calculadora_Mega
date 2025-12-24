@@ -112,13 +112,13 @@ Mostrando al usuario:
 ## 👀 Vista previa
 
 ### 📩 Menú principal
-![Menú](capture1.png)
+![Menú](https://raw.githubusercontent.com/adela088/Calculadora_Mega/master/assets/menu.gif)
 
 ### ⛅ Modo Claro
-![Modo Claro](capture2.png)
+![Modo Claro](https://raw.githubusercontent.com/adela088/Calculadora_Mega/master/assets/light.gif)
 
 ### 🌒 Modo Oscuro
-![Modo Oscuro](capture3.png)
+![Modo Oscuro](https://raw.githubusercontent.com/adela088/Calculadora_Mega/master/assets/dark.gif)
 
 ---
 
