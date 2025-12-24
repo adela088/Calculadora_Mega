@@ -62,7 +62,6 @@ Mostrando al usuario:
 
 ## 👀 Vista previa
 
-> 📌 Las imágenes/GIFs deben estar subidas al repositorio para que se muestren correctamente.
 
 ### 📩 Menú principal
 ![Menú](capture1.png)
