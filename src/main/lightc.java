@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -19,8 +20,6 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-import static main.darkc.mensaje;
-import static main.darkc.mensaje2;
 import static main.menu.Magic;
 
 /**
@@ -44,7 +43,7 @@ public class lightc extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setIcon();
         Mostrador.setEditable(false);
-        m.setText(mensaje);
+        m.setText("");
         mb1.setVisible(false);
         mb2.setVisible(false);
         time1.setVisible(false);
@@ -76,7 +75,8 @@ public class lightc extends javax.swing.JFrame {
 
     //Variables para guardar los valores ingresados
     public static String mensaje = "";
-    public static String mensaje2 = "";
+    private BigDecimal lastResult = null;
+    private int parentesisAbiertos = 0;
     double num1 = -1, num2 = -1;
     int op = 0;
     int c2 = 0;
@@ -120,6 +120,7 @@ public class lightc extends javax.swing.JFrame {
         more = new javax.swing.JButton();
         fact = new javax.swing.JButton();
         pot = new javax.swing.JButton();
+        parentesis = new javax.swing.JButton();
         pi = new javax.swing.JButton();
         mb = new javax.swing.JLabel();
         mb1 = new javax.swing.JLabel();
@@ -372,7 +373,7 @@ public class lightc extends javax.swing.JFrame {
                 factActionPerformed(evt);
             }
         });
-        panel.add(fact, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 120, 80, 30));
+        panel.add(fact, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 120, 60, 30));
 
         pot.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         pot.setText("^");
@@ -381,7 +382,15 @@ public class lightc extends javax.swing.JFrame {
                 potActionPerformed(evt);
             }
         });
-        panel.add(pot, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 120, 80, 30));
+        panel.add(pot, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 120, 60, 30));
+
+        parentesis.setText("( )");
+        parentesis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parentesisActionPerformed(evt);
+            }
+        });
+        panel.add(parentesis, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 120, 60, 30));
 
         pi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pi (1).png"))); // NOI18N
         pi.setToolTipText("");
@@ -390,7 +399,7 @@ public class lightc extends javax.swing.JFrame {
                 piActionPerformed(evt);
             }
         });
-        panel.add(pi, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, 80, 30));
+        panel.add(pi, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, 60, 30));
 
         mb.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         mb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -722,7 +731,6 @@ public class lightc extends javax.swing.JFrame {
         this.dispose();
         men.setVisible(true);
         mensaje = "";
-        mensaje2 = "";
         Mostrador.setText(mensaje);
         int dataSize = 0;
         long inicio = 0;
@@ -740,27 +748,24 @@ public class lightc extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         sonido("op");
         mensaje = "";
-        mensaje2 = "";
         darkc dark = new darkc();
         dark.setVisible(false);
         this.setVisible(true);
         mensaje = "";
-        mensaje2 = "";
         Mostrador.setText(mensaje);
-        m.setText(mensaje2);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         sonido("op");
         mensaje = "";
-        mensaje2 = "";
+
         darkc dark = new darkc();
         dark.setVisible(true);
         this.dispose();
         mensaje = "";
-        mensaje2 = "";
+
         Mostrador.setText(mensaje);
-        m.setText(mensaje2);
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
@@ -775,198 +780,77 @@ public class lightc extends javax.swing.JFrame {
         sonido("op");
         resetIfResultShownForNewNumber();
 
-        if (mensaje.isEmpty()) {
-            return;
-        }
-
         try {
-            num1 = Double.parseDouble(mensaje);
-            op = 10;
-            mensaje2 = "cos(" + mensaje + "°)";
-            m.setText(mensaje2);
-
-            double resultado;
-            if (!Magic) {
-                resultado = cosenoIterativa(num1);
-            } else {
-                resultado = cosenoRecursivo(num1);
-            }
-
-            mensaje = String.valueOf(resultado);
-            xd();
+            BigDecimal val = new BigDecimal(
+                    ExpressionEvaluator.evaluate(m.getText()).toPlainString()
+            );
+            double rad = Math.toRadians(val.doubleValue());
+            BigDecimal res = BigDecimal.valueOf(Math.cos(rad));
+            mensaje = res.stripTrailingZeros().toPlainString();
             Mostrador.setText(mensaje);
             resultadoMostrado = true;
-
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             Mostrador.setText("Error");
-            mensaje = "";
         }
+
     }//GEN-LAST:event_cosActionPerformed
 
     private void senActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senActionPerformed
         sonido("op");
         resetIfResultShownForNewNumber();
-
-        if (mensaje.isEmpty()) {
-            return;
-        }
-
         try {
-            num1 = Double.parseDouble(mensaje);
-            op = 10;
-            mensaje2 = "sin(" + mensaje + "°)";
-            m.setText(mensaje2);
-
-            double resultado;
-            if (!Magic) {
-                resultado = senoIterativa(num1);
-            } else {
-                resultado = senoRecursivo(num1);
-            }
-
-            mensaje = String.valueOf(resultado);
-            xd();
+            BigDecimal val = new BigDecimal(
+                    ExpressionEvaluator.evaluate(m.getText()).toPlainString()
+            );
+            double rad = Math.toRadians(val.doubleValue());
+            BigDecimal res = BigDecimal.valueOf(Math.sin(rad));
+            mensaje = res.stripTrailingZeros().toPlainString();
             Mostrador.setText(mensaje);
             resultadoMostrado = true;
-
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             Mostrador.setText("Error");
-            mensaje = "";
         }
+
     }//GEN-LAST:event_senActionPerformed
 
     private void tangenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tangenteActionPerformed
         sonido("op");
         resetIfResultShownForNewNumber();
 
-        if (mensaje.isEmpty()) {
-            return;
-        }
-
         try {
-            num1 = Double.parseDouble(mensaje);
-            op = 10;
-            mensaje2 = "tan(" + mensaje + "°)";
-            m.setText(mensaje2);
-
-            double resultado;
-            if (!Magic) {
-                resultado = tangenteIterativa(num1);
-            } else {
-                resultado = tangenteRecursiva(num1);
-            }
-
-            mensaje = String.valueOf(resultado);
-            xd();
+            BigDecimal val = new BigDecimal(
+                    ExpressionEvaluator.evaluate(m.getText()).toPlainString()
+            );
+            double rad = Math.toRadians(val.doubleValue());
+            BigDecimal res = BigDecimal.valueOf(Math.tan(rad));
+            mensaje = res.stripTrailingZeros().toPlainString();
             Mostrador.setText(mensaje);
             resultadoMostrado = true;
-
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             Mostrador.setText("Error");
-            mensaje = "";
         }
+
     }//GEN-LAST:event_tangenteActionPerformed
 
     private void raizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raizActionPerformed
         sonido("op");
         resetIfResultShownForNewNumber();
-
-        if (mensaje.isEmpty()) {
-            return;
-        }
-
-        try {
-            num1 = Double.parseDouble(mensaje);
-            op = 14;
-            mensaje2 = "?(" + mensaje + ")";
-            m.setText(mensaje2);
-
-            double resultado;
-            if (!Magic) {
-                resultado = raizIterativa(num1);
-            } else {
-                resultado = raizRecursiva(num1);
-            }
-
-            mensaje = String.valueOf(resultado);
-            xd();
-            Mostrador.setText(mensaje);
-            resultadoMostrado = true;
-
-        } catch (NumberFormatException e) {
-            Mostrador.setText("Error");
-            mensaje = "";
-        }
+        m.setText(m.getText() + "sqrt(");
+        parentesisAbiertos++;
     }//GEN-LAST:event_raizActionPerformed
 
     private void comActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comActionPerformed
         sonido("op");
-
-        // Si el usuario acaba de ver un resultado y presiona nCr, debe comenzar nueva operación
-        if (resultadoMostrado) {
-            mensaje2 = "";
-            resultadoMostrado = false;
-        }
-
-        // SI HAY UN NÚMERO ESCRITO ? ESE ES "n"
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                Mostrador.setText("Error");
-                mensaje = "";
-                return;
-            }
-
-            mensaje2 = "(" + ((int) num1) + " nCr ";
-            m.setText(mensaje2);
-
-            // limpiar entrada para que el usuario escriba "r"
-            mensaje = "";
-            Mostrador.setText("");
-            op = 9;  // tipo operación combinatoria
-            return;
-        }
-
-        // Si no hay número escrito, pero ya había empezado una operación nCr, avisar al usuario
-        if (mensaje2.contains("nCr") && mensaje.isEmpty()) {
-            Mostrador.setText("Ingrese r");
-            return;
-        }
-
-        // Si el usuario presiona nCr sin escribir nada antes:
-        Mostrador.setText("Ingrese n");
+        resetIfResultShownForNewNumber();
+        m.setText(m.getText() + "nCr(");
+        parentesisAbiertos++;
     }//GEN-LAST:event_comActionPerformed
 
     private void EulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EulerActionPerformed
         sonido("op");
         resetIfResultShownForNewNumber();
 
-        if (mensaje.isEmpty()) {
-            return;
-        }
-
-        try {
-            num1 = Double.parseDouble(mensaje);
-            op = 13;
-            mensaje2 = "e^(" + mensaje + ")";
-            m.setText(mensaje2);
-
-            double resultado;
-            if (!Magic) {
-                resultado = eulerIterativa(num1);
-            } else {
-                resultado = eulerRecursivo(num1);
-            }
-
-            mensaje = String.valueOf(resultado);
-            xd();
-            Mostrador.setText(mensaje);
-            resultadoMostrado = true;
-        } catch (NumberFormatException e) {
-            Mostrador.setText("Error");
-            mensaje = "";
-        }
+        m.setText(m.getText() + "2.718281828459045");
     }//GEN-LAST:event_EulerActionPerformed
     public static int c = 0;
     private void moreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreActionPerformed
@@ -984,554 +868,188 @@ public class lightc extends javax.swing.JFrame {
 
     private void factActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_factActionPerformed
         sonido("op");
-        resetIfResultShownForNewNumber();
-
-        if (mensaje.isEmpty()) {
-            return;
-        }
-
-        try {
-            num1 = Double.parseDouble(mensaje);
-            op = 8;
-
-            mensaje2 = mensaje + "!";
-            m.setText(mensaje2);
-
-            double resultado;
-            if (!Magic) {
-                resultado = factorialIterativo(num1);
-            } else {
-                resultado = factorialRecursivo(num1);
-            }
-
-            mensaje = String.valueOf(resultado);
-            xd();
-            Mostrador.setText(mensaje);
-
-            resultadoMostrado = true;
-        } catch (NumberFormatException e) {
-            Mostrador.setText("Error");
-            mensaje = "";
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + "!");
     }//GEN-LAST:event_factActionPerformed
 
     private void potActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potActionPerformed
         sonido("op");
-
-        if (resultadoMostrado) {
-            resultadoMostrado = false;
-            mensaje2 = mensaje + " ^ ";
-            op = 7;
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-            return;
-        }
-
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            op = 7;
-            mensaje2 = mensaje + " ^ ";
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + " ^ ");
     }//GEN-LAST:event_potActionPerformed
 
     private void piActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piActionPerformed
         resetIfResultShownForNewNumber();
         sonido("click");
 
-        mensaje = "3.1415";
-        mensaje2 = "?";
-        xd();
-        Mostrador.setText(mensaje);
-        m.setText(mensaje2);
+        m.setText(m.getText() + "3.141592653589793");
     }//GEN-LAST:event_piActionPerformed
 
     private void resultadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultadoActionPerformed
-        // Métricas
         int dataSize = 1024 * 1024;
-        long inicio = System.nanoTime();
         Runtime runtime = Runtime.getRuntime();
-
-        // Si no hay operación pendiente, intentar mostrar simplemente el número
-        if (op == 0) {
-            try {
-                double resultado = Double.parseDouble(mensaje);
-                mensaje = String.valueOf(resultado);
-                xd();
-                mensaje2 = mensaje;          // arriba muestra el mismo número
-                m.setText(mensaje2);
-                Mostrador.setText(mensaje);
-                resultadoMostrado = true;
-                return;
-            } catch (NumberFormatException e) {
-                Mostrador.setText("Entrada inválida");
-                mensaje = "";
-                return;
-            }
+        while (parentesisAbiertos > 0) {
+            m.setText(m.getText() + ")");
+            parentesisAbiertos--;
         }
 
         try {
-            // Operaciones unarias ya se procesan en sus propios botones,
-            // aquí asumimos que op binario y mensaje contiene el segundo operando
-            if (mensaje.isEmpty()) {
-                Mostrador.setText("Entrada inválida");
-                return;
-            }
+            String expr = m.getText()
+                    .replace("×", "*")
+                    .replace("÷", "/");
 
-            num2 = Double.parseDouble(mensaje);
-            double resultado;
+            expr = aplicarMultiplicacionImplicita(expr);
 
-            if (!Magic) {
-                // Iterativo
-                resultado = switch (op) {
-                    case 1 ->
-                        sumaIterativa(num1, num2);
-                    case 2 ->
-                        restaIterativa(num1, num2);
-                    case 3 ->
-                        multiplicacionIterativa(num1, num2);
-                    case 4 ->
-                        divisionIterativa(num1, num2, 2);
-                    case 5 ->
-                        divIterativa(num1, num2);
-                    case 6 ->
-                        moduloIterativa(num1, num2);
-                    case 7 ->
-                        exponencialIterativo(num1, num2);
-                    case 9 ->
-                        combinacionesIterativa(num1, num2);
-                    default ->
-                        throw new IllegalStateException("Operación inválida");
-                };
-            } else {
-                // Recursivo
-                resultado = switch (op) {
-                    case 1 ->
-                        sumaRecursiva(num1, num2);
-                    case 2 ->
-                        restaRecursiva(num1, num2);
-                    case 3 ->
-                        multiplicacionRecursiva(num1, num2);
-                    case 4 ->
-                        divisionRecursiva(num1, num2, 2);
-                    case 5 ->
-                        divRecursiva(num1, num2);
-                    case 6 ->
-                        modRecursivo(num1, num2);
-                    case 7 ->
-                        exponencialRecursivo(num1, num2);
-                    case 9 ->
-                        combinacionesRecursivas(num1, num2);
-                    default ->
-                        throw new IllegalStateException("Operación inválida");
-                };
-            }
+            long inicio = System.nanoTime();
+            validarExpresion(expr);
+            BigDecimal result = ExpressionEvaluator.evaluate(expr);
+            long fin = System.nanoTime();
 
-            // Construir la expresión según el operador
-            String opSymbol = switch (op) {
-                case 1 ->
-                    "+";
-                case 2 ->
-                    "-";
-                case 3 ->
-                    "×";
-                case 4 ->
-                    "÷";
-                case 5 ->
-                    " div ";
-                case 6 ->
-                    " mod ";
-                case 7 ->
-                    " ^ ";
-                case 9 ->
-                    " nCr ";
-                default ->
-                    "?";
-            };
+            long tiempoNs = fin - inicio;
 
-            String exprMostrada = num1 + " " + opSymbol + " " + num2;
-            m.setText(exprMostrada + " =");
+            String resStr = result.stripTrailingZeros().toPlainString();
+            Mostrador.setText(resStr);
 
-            mensaje = String.valueOf(resultado);
-            xd();
-            Mostrador.setText(mensaje);
+            lastResult = result;
 
-            // Métricas
+            // Mostrar tiempo
             mb1.setVisible(true);
             mb2.setVisible(true);
             time1.setVisible(true);
             time2.setVisible(true);
+            time.setVisible(true);
             long espacio = (runtime.totalMemory() - runtime.freeMemory()) / dataSize;
             mb.setText(espacio + " MB");
-            long fin = System.nanoTime();
-            time.setText((fin - inicio) + " ns");
+            time.setText(tiempoNs + " ns");
             dialog.setVisible(true);
+
+            m.setText(resStr);
+            resultadoMostrado = true;
+
             sonido("op");
 
-            resultadoMostrado = true;
-            op = 0; // limpiar operación pendiente
-
-        } catch (NumberFormatException e) {
-            Mostrador.setText("Entrada inválida");
-            mensaje = "";
-            resultadoMostrado = false;
-        } catch (IllegalStateException e) {
-            Mostrador.setText("Operación no soportada");
-            mensaje = "";
-            resultadoMostrado = false;
+        } catch (IllegalArgumentException e) {
+            Mostrador.setText(e.getMessage());
+        } catch (Exception e) {
+            Mostrador.setText("Error matemático");
         }
+
     }//GEN-LAST:event_resultadoActionPerformed
 
     private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
         sonido("borrar");
 
-        if (!mensaje.isEmpty()) {
-            mensaje = mensaje.substring(0, mensaje.length() - 1);
-            Mostrador.setText(mensaje);
-            mensaje2 = mensaje;   // sincroniza arriba con abajo mientras se escribe
-            m.setText(mensaje2);
+        String expr = m.getText();
+        if (!expr.isEmpty()) {
+            char ultimo = expr.charAt(expr.length() - 1);
 
-            if (mensaje.isEmpty()) {
-                resultadoMostrado = false;
+            if (ultimo == '(') {
+                parentesisAbiertos--;
             }
+            if (ultimo == ')') {
+                parentesisAbiertos++;
+            }
+
+            m.setText(expr.substring(0, expr.length() - 1));
+            Mostrador.setText("");
         }
 
-        // Ocultar métricas si estaba viendo resultado
-        mb1.setVisible(false);
-        mb2.setVisible(false);
-        time1.setVisible(false);
-        time2.setVisible(false);
-        dialog.setVisible(false);
-        mb.setText("");
-        time.setText("");
 
     }//GEN-LAST:event_borrarActionPerformed
 
     private void comaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comaActionPerformed
         resetIfResultShownForNewNumber();
-        addmensajex3(".");
-        xd();
-        mensaje2 = mensaje;
-        m.setText(mensaje2);
+        m.setText(m.getText() + ".");
         sonido("click");
     }//GEN-LAST:event_comaActionPerformed
 
     private void ceroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ceroActionPerformed
-        resetIfResultShownForNewNumber();
-        mensaje += 0;
-        Mostrador.setText(mensaje);
-        mensaje2 = mensaje2 + "0";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "0");
         sonido("click");
     }//GEN-LAST:event_ceroActionPerformed
 
     private void sumaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sumaActionPerformed
         sonido("op");
-
-        // Si venimos de un resultado, queremos usar ese resultado como primer operando
-        if (resultadoMostrado) {
-            resultadoMostrado = false;
-            mensaje2 = mensaje + " + ";
-            op = 1;
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-            return;
-        }
-
-        // Si hay un número escrito, lo usamos como num1
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            op = 1;
-            mensaje2 = mensaje + " + ";
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-        } else {
-            // No hay número, asumimos 0 como primer operando
-            if (mensaje2.isEmpty()) {
-                num1 = 0;
-                op = 1;
-                mensaje2 = "0 + ";
-                m.setText(mensaje2);
-            }
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + " + ");
     }//GEN-LAST:event_sumaActionPerformed
 
     private void tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tresActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(3);
-        xd();
-        mensaje2 = mensaje2 + "3";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "3");
         sonido("click");
     }//GEN-LAST:event_tresActionPerformed
 
     private void restaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restaActionPerformed
         sonido("op");
-
-        if (resultadoMostrado) {
-            resultadoMostrado = false;
-            mensaje2 = mensaje + " - ";
-            op = 2;
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-            return;
-        }
-
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            op = 2;
-            mensaje2 = mensaje + " - ";
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-        } else {
-            // Si no hay nada y toca "-", permitimos empezar con número negativo:
-            if (mensaje2.isEmpty()) {
-                mensaje = "-";
-                Mostrador.setText(mensaje);
-                mensaje2 = "-";
-                m.setText(mensaje2);
-            }
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + " - ");
     }//GEN-LAST:event_restaActionPerformed
 
     private void seisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seisActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(6);
-        xd();
-        mensaje2 = mensaje2 + "6";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "6");
         sonido("click");
     }//GEN-LAST:event_seisActionPerformed
 
     private void cincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cincoActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(5);
-        xd();
-        mensaje2 = mensaje2 + "5";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "5");
         sonido("click");
     }//GEN-LAST:event_cincoActionPerformed
 
     private void cuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuatroActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(4);
-        xd();
-        mensaje2 = mensaje2 + "4";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "4");
         sonido("click");
     }//GEN-LAST:event_cuatroActionPerformed
 
     private void multiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multiActionPerformed
         sonido("op");
-
-        if (resultadoMostrado) {
-            resultadoMostrado = false;
-            mensaje2 = mensaje + " × ";
-            op = 3;
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-            return;
-        }
-
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            op = 3;
-            mensaje2 = mensaje + " × ";
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + " * ");
     }//GEN-LAST:event_multiActionPerformed
 
     private void ochoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ochoActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(8);
-        xd();
-        mensaje2 = mensaje2 + "8";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "8");
         sonido("click");
     }//GEN-LAST:event_ochoActionPerformed
 
     private void sieteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sieteActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(7);
-        xd();
-        mensaje2 = mensaje2 + "7";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "7");
         sonido("click");
     }//GEN-LAST:event_sieteActionPerformed
 
     private void nueveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nueveActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(9);
-        xd();
-        mensaje2 = mensaje2 + "9";
-        m.setText(mensaje2);
+        m.setText(m.getText() + "9");
         sonido("click");
     }//GEN-LAST:event_nueveActionPerformed
 
     private void divisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divisionActionPerformed
         sonido("op");
-
-        if (resultadoMostrado) {
-            resultadoMostrado = false;
-            mensaje2 = mensaje + " ÷ ";
-            op = 4;
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-            return;
-        }
-
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            op = 4;
-            mensaje2 = mensaje + " ÷ ";
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + " / ");
     }//GEN-LAST:event_divisionActionPerformed
 
     private void modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modActionPerformed
         sonido("op");
-
-        if (resultadoMostrado) {
-            resultadoMostrado = false;
-            mensaje2 = mensaje + " mod ";
-            op = 6;
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-            return;
-        }
-
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            op = 6;
-            mensaje2 = mensaje + " mod ";
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + "mod(");
+        parentesisAbiertos++;
     }//GEN-LAST:event_modActionPerformed
 
     private void divActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divActionPerformed
         sonido("op");
-
-        if (resultadoMostrado) {
-            resultadoMostrado = false;
-            mensaje2 = mensaje + " div ";
-            op = 5;
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-            return;
-        }
-
-        if (!mensaje.isEmpty()) {
-            try {
-                num1 = Double.parseDouble(mensaje);
-            } catch (NumberFormatException e) {
-                num1 = 0;
-            }
-            op = 5;
-            mensaje2 = mensaje + " div ";
-            mensaje = "";
-            Mostrador.setText("");
-            m.setText(mensaje2);
-        }
+        useLastResultIfNeeded();
+        m.setText(m.getText() + "div(");
+        parentesisAbiertos++;
     }//GEN-LAST:event_divActionPerformed
 
     private void dosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dosActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(2);
-        xd();
-        mensaje2 = mensaje;
-        m.setText(mensaje2);
+        m.setText(m.getText() + "2");
         sonido("click");
     }//GEN-LAST:event_dosActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
-        mensaje = "";
-        mensaje2 = "";
-        num1 = 0;
-        num2 = 0;
-        op = 0;
-        c2 = 0;
         resultadoMostrado = false;
-
-        Mostrador.setText("");
         m.setText("");
-
-        coma.setEnabled(true);
+        Mostrador.setText("");
 
         mb1.setVisible(false);
         mb2.setVisible(false);
@@ -1540,16 +1058,13 @@ public class lightc extends javax.swing.JFrame {
         dialog.setVisible(false);
         mb.setText("");
         time.setText("");
+        parentesisAbiertos = 0;
 
         sonido("clear_all");
     }//GEN-LAST:event_clearActionPerformed
 
     private void unoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unoActionPerformed
-        resetIfResultShownForNewNumber();
-        addmensaje(1);
-        xd();
-        mensaje2 = mensaje;         // arriba y abajo reflejan lo que vas escribiendo
-        m.setText(mensaje2);
+        m.setText(m.getText() + "1");
         sonido("click");
     }//GEN-LAST:event_unoActionPerformed
 
@@ -1559,9 +1074,9 @@ public class lightc extends javax.swing.JFrame {
         iter.setVisible(false);
         panel.setVisible(false);
         mensaje = "";
-        mensaje2 = "";
+
         Mostrador.setText(mensaje);
-        m.setText(mensaje2);
+
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void cerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarMouseClicked
@@ -1584,9 +1099,7 @@ public class lightc extends javax.swing.JFrame {
         panel.setVisible(false);
         iter.setVisible(true);
         mensaje = "";
-        mensaje2 = "";
         Mostrador.setText(mensaje);
-        m.setText(mensaje2);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void cerrar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrar2MouseClicked
@@ -1602,6 +1115,29 @@ public class lightc extends javax.swing.JFrame {
     private void cerrar2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrar2MouseExited
         cerrar2.setLocation(0, 360);
     }//GEN-LAST:event_cerrar2MouseExited
+
+    private void parentesisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parentesisActionPerformed
+        sonido("click");
+        useLastResultIfNeeded();
+
+        String expr = m.getText();
+
+        if (expr.isEmpty() || expr.endsWith(" ") || expr.endsWith("(")) {
+            m.setText(expr + "(");
+            parentesisAbiertos++;
+            return;
+        }
+
+        if (parentesisAbiertos > 0
+                && (Character.isDigit(expr.charAt(expr.length() - 1)) || expr.endsWith(")"))) {
+            m.setText(expr + ")");
+            parentesisAbiertos--;
+            return;
+        }
+
+        m.setText(expr + "(");
+        parentesisAbiertos++;
+    }//GEN-LAST:event_parentesisActionPerformed
 
     //Operaciones recursivas
     double raizRecursiva(double numero) {
@@ -2016,65 +1552,33 @@ public class lightc extends javax.swing.JFrame {
         return a + b;
     }
 
-    void addmensaje(int n) {
-        if (mensaje.length() == 32) {
-        } else {
-            mensaje += n;
-        }
-    }
+    private String aplicarMultiplicacionImplicita(String expr) {
 
-    void addmensajex2(double n) {
-        if (mensaje.length() == 32) {
-        } else {
-            mensaje += n;
-        }
-    }
+        // Número seguido de (
+        expr = expr.replaceAll("(\\d)\\(", "$1*(");
 
-    void addmensajex3(String x) {
-        if (mensaje.length() == 32) {
-        } else {
-            int indicePunto = mensaje.indexOf(".");
+        // ) seguido de número
+        expr = expr.replaceAll("\\)(\\d)", ")*$1");
 
-            if (indicePunto != -1) {
-            } else {
-                mensaje += x;
-            }
-        }
-    }
+        // ) seguido de (
+        expr = expr.replaceAll("\\)\\(", ")*(");
 
-    void xd() {
-        Font font = Mostrador.getFont();
-        int len = mensaje.length();
+        // Número seguido de función
+        expr = expr.replaceAll("(\\d)(sqrt|sin|cos|tan|mod|div|nCr)", "$1*$2");
 
-        if (len < 16) {
-            font = font.deriveFont(36f);
-        } else if (len <= 22) {
-            font = font.deriveFont(24f);
-        } else {
-            font = font.deriveFont(12f);
-        }
+        // Constantes
+        expr = expr.replaceAll("(\\d)(3\\.141592653589793)", "$1*$2"); // pi
+        expr = expr.replaceAll("(\\d)(2\\.718281828459045)", "$1*$2"); // e
 
-        Mostrador.setFont(font);
-        Mostrador.setText(mensaje);
+        return expr;
     }
 
     // Resetea la entrada si ya había un resultado mostrado y el usuario empieza a escribir
     private void resetIfResultShownForNewNumber() {
         if (resultadoMostrado) {
-            mensaje = "";
-            mensaje2 = "";
-            Mostrador.setText("");
             m.setText("");
+            Mostrador.setText("");
             resultadoMostrado = false;
-
-            // Ocultar métricas
-            mb1.setVisible(false);
-            mb2.setVisible(false);
-            time1.setVisible(false);
-            time2.setVisible(false);
-            dialog.setVisible(false);
-            mb.setText("");
-            time.setText("");
         }
     }
 
@@ -2119,7 +1623,6 @@ public class lightc extends javax.swing.JFrame {
         // *
         bind(im, am, "*", () -> multi.doClick());
         bind(im, am, "MULTIPLY", () -> multi.doClick()); // numpad *
-        bind(im, am, "shift 8", () -> multi.doClick());
 
         // /
         bind(im, am, "/", () -> division.doClick());
@@ -2138,6 +1641,61 @@ public class lightc extends javax.swing.JFrame {
 
         // BACKSPACE 
         bind(im, am, "BACK_SPACE", () -> borrar.doClick());
+
+        // Paréntesis teclado normal
+        bind(im, am, "shift 8", () -> parentesis.doClick()); // (
+        bind(im, am, "shift 9", () -> parentesis.doClick()); // )
+
+        // Paréntesis directos 
+        bind(im, am, "(", () -> parentesis.doClick());
+        bind(im, am, ")", () -> parentesis.doClick());
+
+    }
+
+    private void useLastResultIfNeeded() {
+        if (resultadoMostrado && lastResult != null) {
+            m.setText(lastResult.stripTrailingZeros().toPlainString());
+            resultadoMostrado = false;
+        }
+    }
+
+    private void validarExpresion(String expr) throws IllegalArgumentException {
+
+        if (expr == null || expr.trim().isEmpty()) {
+            throw new IllegalArgumentException("Expresión vacía");
+        }
+
+        // No debe terminar en operador
+        if (expr.matches(".*[+\\-*/^]$")) {
+            throw new IllegalArgumentException("Expresión incompleta");
+        }
+
+        // Operadores consecutivos
+        if (expr.matches(".*[+\\-*/^]{2,}.*")) {
+            throw new IllegalArgumentException("Operadores consecutivos");
+        }
+
+        // Paréntesis balanceados
+        int balance = 0;
+        for (char c : expr.toCharArray()) {
+            if (c == '(') {
+                balance++;
+            }
+            if (c == ')') {
+                balance--;
+            }
+            if (balance < 0) {
+                throw new IllegalArgumentException("Paréntesis incorrectos");
+            }
+        }
+        if (balance != 0) {
+            throw new IllegalArgumentException("Paréntesis sin cerrar");
+        }
+
+        // Evitar paréntesis vacíos
+        if (expr.contains("()")) {
+            throw new IllegalArgumentException("Paréntesis vacíos");
+        }
     }
 
     private void bind(InputMap im, ActionMap am, String key, Runnable action) {
@@ -2244,6 +1802,7 @@ public class lightc extends javax.swing.JFrame {
     private javax.swing.JPanel p1;
     private javax.swing.JPanel p2;
     private javax.swing.JPanel panel;
+    private javax.swing.JButton parentesis;
     private javax.swing.JButton pi;
     private javax.swing.JButton pot;
     private javax.swing.JButton raiz;
