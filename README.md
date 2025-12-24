@@ -5,20 +5,23 @@
 ![Estado](https://img.shields.io/badge/Estado-En%20desarrollo-yellow?style=for-the-badge)
 ![Plataforma](https://img.shields.io/badge/Plataforma-Desktop-lightgrey?style=for-the-badge)
 
-> **Calculadora Mega** es una aplicación de escritorio desarrollada en **Java (Swing)** que implementa una **calculadora científica avanzada**, permitiendo comparar **operaciones iterativas y recursivas**, junto con métricas de **tiempo de ejecución** y **uso de memoria**.
+> **Calculadora Mega** es una aplicación de escritorio desarrollada en **Java (Swing)** que implementa una **calculadora científica moderna**, permitiendo evaluar **expresiones matemáticas completas** y comparar **implementaciones iterativas y recursivas**, junto con métricas de **tiempo de ejecución** y **uso de memoria**.
 
 ---
 
 ## ✨ Características principales
 
 - 🔢 Operaciones matemáticas básicas y científicas
+- 🧮 Evaluación de **expresiones completas** con precedencia
+- 🧩 Soporte de **paréntesis anidados**
+- ✖️ **Multiplicación implícita** (ej. `8(9-3)`, `(2+3)(4+1)`)
 - 🔁 Doble implementación: **Iterativa y Recursiva**
 - ⏱️ Medición de **tiempo de ejecución**
 - 🧠 Cálculo de **memoria utilizada**
 - 🎨 Interfaz gráfica intuitiva con **Swing**
 - 🌗 **Modo Claro / Modo Oscuro**
 - 🎧 **Sonidos integrados** para acciones
-- 🧩 Arquitectura modular y extensible
+- ⌨️ Uso completo mediante **teclado y teclado numérico**
 
 ---
 
@@ -33,15 +36,61 @@
 - División entera  
 
 ### 📐 Operaciones científicas
-- Potencia  
-- Raíz cuadrada  
-- Factorial  
+- Potencia (`^`)  
+- Raíz cuadrada (`sqrt`)  
+- Factorial (`!`)  
 - Combinatoria (**nCr**)  
 
 ### 📊 Trigonometría
 - Seno  
 - Coseno  
 - Tangente  
+
+---
+
+## 🧮 Evaluación de expresiones
+
+La calculadora permite ingresar expresiones matemáticas completas como:
+- 8 * (9 - 3)
+- (2 + 3)(4 + 1)
+- sqrt(16 + 4)
+- 5 + 3 * 2
+
+
+Características:
+- ✔ Precedencia correcta de operadores
+- ✔ Paréntesis balanceados automáticamente
+- ✔ Validación de errores antes de evaluar
+- ✔ Cierre automático de paréntesis pendientes
+
+---
+
+## 🔁 ANS implícito (resultado anterior)
+
+La calculadora **no requiere un botón ANS**.
+
+- El último resultado se conserva internamente
+- Al presionar un operador tras obtener un resultado, este se reutiliza automáticamente
+
+Ejemplo:
+5 + 3 = → 8
+
+* 2 = → 16
+
+
+Este comportamiento simula el funcionamiento de calculadoras modernas como **Samsung** o **Windows Calculator**.
+
+---
+
+## ⌨️ Soporte de teclado
+
+- Números (teclado normal y numérico)
+- Operadores `+ - * /`
+- Paréntesis:
+  - `Shift + 8` → `(`
+  - `Shift + 9` → `)`
+- `Enter` → calcular resultado
+- `Backspace` → borrar último carácter
 
 ---
 
@@ -61,7 +110,6 @@ Mostrando al usuario:
 ---
 
 ## 👀 Vista previa
-
 
 ### 📩 Menú principal
 ![Menú](capture1.png)
@@ -106,15 +154,6 @@ Mostrando al usuario:
 
 ---
 
-### 🔹 Opción 2 – Uso de la aplicación
-
-- Usa botones o teclado (NumPad soportado)
-- Selecciona **modo iterativo o recursivo**
-- Ejecuta operaciones básicas o científicas
-- Observa métricas de tiempo y memoria
-
----
-
 ## 📌 Objetivo del proyecto
 
 Este proyecto tiene como finalidad **explorar y comparar** dos paradigmas fundamentales de la programación:
@@ -135,7 +174,7 @@ Permitindo analizar diferencias en:
 **Andrea De la Ossa**  
 🎓 Estudiante de Ingeniería de Sistemas  
 💻 Desarrollo en Java  
-🎯 Interés en interfaces gráficas y análisis de rendimiento
+🎯 Interés en interfaces gráficas y análisis de rendimiento  
 
 📍 Proyecto académico / personal  
 📅 2025
