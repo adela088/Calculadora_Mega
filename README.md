@@ -1,50 +1,118 @@
-# 🧮 Calculadora Mega – Iterativa y Recursiva
+# 🧮 Calculadora Mega
 
-Este proyecto es una **calculadora científica desarrollada en Java**, que permite al usuario realizar operaciones matemáticas mediante **dos enfoques diferentes**:
+![Java](https://img.shields.io/badge/Java-23-orange?style=for-the-badge&logo=java)
+![Swing](https://img.shields.io/badge/GUI-Java%20Swing-blue?style=for-the-badge)
+![Estado](https://img.shields.io/badge/Estado-En%20desarrollo-yellow?style=for-the-badge)
+![Plataforma](https://img.shields.io/badge/Plataforma-Desktop-lightgrey?style=for-the-badge)
 
-- ✅ **Modo Iterativo**  
-- 🔁 **Modo Recursivo**
-
-Además de realizar los cálculos, la aplicación muestra:
-
-- ⏱️ **Tiempo de ejecución** de cada operación  
-- 🧠 **Espacio de memoria utilizado**  
+> **Calculadora Mega** es una aplicación de escritorio desarrollada en **Java (Swing)** que implementa una **calculadora científica moderna**, permitiendo evaluar **expresiones matemáticas completas** y comparar **implementaciones iterativas y recursivas**, junto con métricas de **tiempo de ejecución** y **uso de memoria**.
 
 ---
 
 ## ✨ Características principales
 
-- Operaciones básicas y científicas:
-  - Suma, resta, multiplicación, división
-  - Potencia, raíz, módulo, división entera
-  - Factorial, combinatoria
-  - Funciones trigonométricas: seno, coseno, tangente
-- Comparación en tiempo y espacio de cada operación en sus versiones iterativa y recursiva
-- Interfaz gráfica intuitiva usando JFrames
-- Tema Claro y Oscuro para la preferencia del usuario
+- 🔢 Operaciones matemáticas básicas y científicas
+- 🧮 Evaluación de **expresiones completas** con precedencia
+- 🧩 Soporte de **paréntesis anidados**
+- ✖️ **Multiplicación implícita** (ej. `8(9-3)`, `(2+3)(4+1)`)
+- 🔁 Doble implementación: **Iterativa y Recursiva**
+- ⏱️ Medición de **tiempo de ejecución**
+- 🧠 Cálculo de **memoria utilizada**
+- 🎨 Interfaz gráfica intuitiva con **Swing**
+- 🌗 **Modo Claro / Modo Oscuro**
+- 🎧 **Sonidos integrados** para acciones
+- ⌨️ Uso completo mediante **teclado y teclado numérico**
 
 ---
 
-## 🚀 Tecnologías utilizadas
+## 🧠 Operaciones disponibles
 
-- **Lenguaje**: Java  
-- **Entorno**: NetBeans  
-- **Librerías**:
-  - `javax.swing` (GUI)
-  - `System.nanoTime()` (medición de tiempo)
-  - `Runtime.getRuntime()` (uso de memoria)
+### ➕ Operaciones básicas
+- Suma  
+- Resta  
+- Multiplicación  
+- División  
+- Módulo  
+- División entera  
+
+### 📐 Operaciones científicas
+- Potencia (`^`)  
+- Raíz cuadrada (`sqrt`)  
+- Factorial (`!`)  
+- Combinatoria (**nCr**)  
+
+### 📊 Trigonometría
+- Seno  
+- Coseno  
+- Tangente  
 
 ---
 
-## 📌 Objetivo
+## 🧮 Evaluación de expresiones
 
-El propósito de esta calculadora es **explorar y comparar los paradigmas de programación iterativa y recursiva**, observando su desempeño a nivel de ejecución y uso de recursos, con fines educativos y de práctica.
+La calculadora permite ingresar expresiones matemáticas completas como:
+- 8 * (9 - 3)
+- (2 + 3)(4 + 1)
+- sqrt(16 + 4)
+- 5 + 3 * 2
+
+
+Características:
+- ✔ Precedencia correcta de operadores
+- ✔ Paréntesis balanceados automáticamente
+- ✔ Validación de errores antes de evaluar
+- ✔ Cierre automático de paréntesis pendientes
 
 ---
-## 📷 Capturas de pantalla
 
-### 📩 Menú
-![Modo Recursivo](capture1.png)
+## 🔁 ANS implícito (resultado anterior)
+
+La calculadora **no requiere un botón ANS**.
+
+- El último resultado se conserva internamente
+- Al presionar un operador tras obtener un resultado, este se reutiliza automáticamente
+
+Ejemplo:
+5 + 3 = → 8
+
+* 2 = → 16
+
+
+Este comportamiento simula el funcionamiento de calculadoras modernas como **Samsung** o **Windows Calculator**.
+
+---
+
+## ⌨️ Soporte de teclado
+
+- Números (teclado normal y numérico)
+- Operadores `+ - * /`
+- Paréntesis:
+  - `Shift + 8` → `(`
+  - `Shift + 9` → `)`
+- `Enter` → calcular resultado
+- `Backspace` → borrar último carácter
+
+---
+
+## 🔁 Comparación Iterativa vs Recursiva
+
+La calculadora permite ejecutar cada operación usando:
+
+- 🔂 **Implementación iterativa**
+- 🔁 **Implementación recursiva**
+
+Mostrando al usuario:
+
+- ⏱️ Tiempo exacto de ejecución
+- 🧠 Consumo de memoria
+- ⚖️ Diferencias de rendimiento entre enfoques
+
+---
+
+## 👀 Vista previa
+
+### 📩 Menú principal
+![Menú](capture1.png)
 
 ### ⛅ Modo Claro
 ![Modo Claro](capture2.png)
@@ -54,6 +122,60 @@ El propósito de esta calculadora es **explorar y comparar los paradigmas de pro
 
 ---
 
-🧑‍💻 Autora: Andrea De la Ossa
+## 🖥️ Tecnologías utilizadas
 
-💼 Estudiante de Ingeniería de Sistemas
+- **Java SE**
+- **Java Swing**
+- **Apache NetBeans**
+- **Eventos y Listeners**
+- **System.nanoTime()**
+- **Runtime.getRuntime()**
+- **Arquitectura Iterativa y Recursiva**
+
+---
+
+## ▶️ Cómo ejecutar el proyecto
+
+### 🔹 Opción 1 – Ejecutar desde NetBeans
+
+#### ✅ Requisitos
+- **JDK 17 o superior**
+- **Apache NetBeans 15 o superior**
+
+#### 📁 Importar el proyecto
+1. Abre NetBeans  
+2. `File → Open Project`  
+3. Selecciona la carpeta **Calculadora_Mega**  
+4. Presiona **Open Project**
+
+#### ▶️ Ejecutar
+- Clic derecho sobre el proyecto → **Run**
+- O presiona **F6**
+
+---
+
+## 📌 Objetivo del proyecto
+
+Este proyecto tiene como finalidad **explorar y comparar** dos paradigmas fundamentales de la programación:
+
+- 🔁 **Recursividad**
+- 🔂 **Iteración**
+
+Permitindo analizar diferencias en:
+
+- ⚡ Velocidad de ejecución  
+- 🧠 Uso de memoria  
+- 🧩 Complejidad de implementación  
+
+---
+
+## 👩‍💻 Autora
+
+**Andrea De la Ossa**  
+🎓 Estudiante de Ingeniería de Sistemas  
+💻 Desarrollo en Java  
+🎯 Interés en interfaces gráficas y análisis de rendimiento  
+
+📍 Proyecto académico / personal  
+📅 2025
+
