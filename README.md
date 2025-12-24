@@ -138,4 +138,6 @@ Permitindo analizar diferencias en:
 💻 Desarrollo en Java  
 🎯 Interés en interfaces gráficas y análisis de rendimiento
 
+📍 Proyecto académico / personal  
+📅 2025
 
