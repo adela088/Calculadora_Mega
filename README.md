@@ -154,6 +154,19 @@ Mostrando al usuario:
 
 ---
 
+## 📥 Descarga
+
+Puedes descargar la versión ejecutable para Windows desde GitHub Releases:
+
+👉 **[Descargar Calculadora Mega v1.0.0 (.exe)](https://github.com/adela088/Calculadora_Mega/releases/latest)**
+
+### 🖥️ Requisitos
+- Windows 10 o superior
+- No requiere Java instalado (exe empaquetado)
+
+> Si tu antivirus muestra una advertencia, es normal en ejecutables Java no firmados.
+
+
 ## 📌 Objetivo del proyecto
 
 Este proyecto tiene como finalidad **explorar y comparar** dos paradigmas fundamentales de la programación:
