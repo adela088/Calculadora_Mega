@@ -5,6 +5,8 @@
 ![Estado](https://img.shields.io/badge/Estado-Finalizado-brightgreen?style=for-the-badge)
 ![Plataforma](https://img.shields.io/badge/Plataforma-Desktop-lightgrey?style=for-the-badge)
 
+## 📖 Descripción
+
 > **Calculadora Mega** es una aplicación de escritorio desarrollada en **Java (Swing)** que implementa una **calculadora científica moderna**, permitiendo evaluar **expresiones matemáticas completas** y comparar **implementaciones iterativas y recursivas**, junto con métricas de **tiempo de ejecución** y **uso de memoria**.
 
 ---
