@@ -192,5 +192,5 @@ Permitindo analizar diferencias en:
 🎯 Interés en interfaces gráficas y análisis de rendimiento  
 
 📍 Proyecto académico / personal  
-📅 2025
+
 
